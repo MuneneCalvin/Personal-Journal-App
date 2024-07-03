@@ -3,6 +3,12 @@ import userRoutes from './user.routes';
 
 const router = Router();
 
-router.use('/user', userRoutes);
+const defaultRoutes = [
+    { path: '/users', route: userRoutes },
+];
+
+defaultRoutes.forEach((route) => {
+    router.use(route.path, route.route);
+});
 
 export default router;

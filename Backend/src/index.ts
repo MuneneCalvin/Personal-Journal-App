@@ -4,7 +4,8 @@ import dotenv from 'dotenv';
 // import cors from 'cors';
 import config  from './config/config';
 import logger from './config/logger';
-// import Database from './config/database';
+import Database from './utils/database';
+import Routes from './routes';
 
 dotenv.config();
 
@@ -14,13 +15,20 @@ app.use(bodyParser.json());
 // app.use(cors());
 
 // Sync the database
-// const db = new Database();
-// db.sequelize?.sync();
+Database.sync({ force: false })
+    .then(() => {
+        logger.info('✅ Connected to Database. 🚀');
+    })
+    .catch((error) => {
+        logger.error(' ❌ Error connecting to the database: ');
+    });
 
 // Routes
 app.get('/', (req, res) => {
     res.send('Welcome to the Journal App API! 😉👋');
 });
+
+app.use(Routes);
 
 // Start the server
 app.listen(config.port, () => {

@@ -26,12 +26,12 @@ Database.sync({ force: false })
         logger.info('✅ Connected to Database. 🚀');
     })
     .catch((error) => {
-        logger.error(' ❌ Error connecting to the database: ');
+        logger.error(' ❌ Error connecting to the database: ', error);
     });
 
 // Routes
 app.get('/', (req, res) => {
-    res.send('Welcome to the Journal App API! 😉👋');
+    res.send('Welcome to the Journal App API! 😉👋',);
 });
 
 app.use(Routes);

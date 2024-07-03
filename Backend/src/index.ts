@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 // import cors from 'cors';
 import config  from './config/config';
 import logger from './config/logger';
-import Database from './config/database';
+// import Database from './config/database';
 
 dotenv.config();
 
@@ -14,8 +14,8 @@ app.use(bodyParser.json());
 // app.use(cors());
 
 // Sync the database
-const db = new Database();
-db.sequelize?.sync();
+// const db = new Database();
+// db.sequelize?.sync();
 
 // Routes
 app.get('/', (req, res) => {

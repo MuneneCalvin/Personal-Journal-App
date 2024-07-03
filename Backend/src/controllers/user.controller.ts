@@ -2,22 +2,22 @@ import { Request, Response } from 'express';
 import userService from '../services/user.service';
 
 class UserController {
-    public async registerUser(req: Request, res: Response) {
+    public async getAllUsers(req: Request, res: Response) {
         try {
-            const user = await userService.registerUser(req.body);
-            res.status(201).json({ success: true, message: "User Registered Successfully!!!", user });
+            const users = await userService.getAllUsers();
+            res.status(200).json({ success: true, message: "Users fetched", users });
         } catch (error) {
-            res.status(400).json({ message: 'Failed to Register user', details: error });
+            res.status(400).json({ message: 'Failed to fetch users', details: error });
         }
     }
 
-    public async loginUser(req: Request, res: Response) {
+    public async getUserById(req: Request, res: Response) {
         try {
-            const { email, password } = req.body;
-            const token = await userService.loginUser(email, password);
-            res.status(200).json({ success: true, message: "User Logged In Successfully!!!", token });
+            const { userId } = req.params;
+            const user = await userService.getUserById(userId);
+            res.status(200).json({ success: true, message: "User fetched", user });
         } catch (error) {
-            res.status(400).json({ message: 'Failed to Login user', details: error });
+            res.status(400).json({ message: 'Failed to fetch user', details: error });
         }
     }
 
@@ -35,28 +35,9 @@ class UserController {
         try {
             const { userId } = req.params;
             const deletedUser = await userService.deleteUser(userId);
-            res.status(200).json({ success: true, message: "User Deleted", });
+            res.status(200).json({ success: true, message: "User Deleted", deletedUser });
         } catch (error) {
             res.status(400).json({ message: 'Failed to delete user', details: error });
-        }
-    }
-
-    public async getprofile(req: Request, res: Response) {
-        try {
-            const { userId } = req.params;
-            const user = await userService.getprofile(userId);
-            res.status(200).json({ success: true, message: "User Profile", user });
-        } catch (error) {
-            res.status(400).json({ message: 'Failed to get user profile', details: error });
-        }
-    }
-
-    public async logoutUser(req: Request, res: Response) {
-        try {
-            const response = await userService.logoutUser();
-            res.status(200).json({ success: true, message: response});
-        } catch (error) {
-            res.status(400).json({ message: 'Failed to logout user', details: error });
         }
     }
 }

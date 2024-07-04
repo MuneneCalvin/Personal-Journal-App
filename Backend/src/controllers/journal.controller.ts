@@ -15,11 +15,20 @@ class JournalController {
 
     public async getAllJournals(req: Request, res: Response) {
         try {
-            const userId = req.app.locals.user.id;
-            const journals = await journalService.getAllJournals(userId);
+            const journals = await journalService.getall();
             res.status(200).json({ success: true, message: "All Journals", data: journals});
         } catch (error) {
-            res.status(400).json({ message: 'Failed to get journals', details: error });
+            res.status(400).json({ message: 'Failed to get all journals', details: error });
+        }
+    }
+
+    public async getAllJournalsByUser(req: Request, res: Response) {
+        try {
+            const userId = req.app.locals.user.id;
+            const journals = await journalService.getAllJournalsByUser(userId);
+            res.status(200).json({ success: true, message: "All Journals by User", data: journals});
+        } catch (error) {
+            res.status(400).json({ message: 'Failed to get all journals by user', details: error });
         }
     }
 

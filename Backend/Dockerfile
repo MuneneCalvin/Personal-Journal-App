@@ -7,6 +7,8 @@ RUN npm install
 
 COPY . .
 
+# RUN npm run dev
+# TODO: Change to production build before deployment
 RUN npm run build
 
 EXPOSE 4200

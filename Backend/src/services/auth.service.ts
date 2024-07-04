@@ -9,7 +9,7 @@ class AuthService {
     public async registerUser(user: any) {
         const hashedPassword = bcrypt.hashSync(user.password, 10);
         user.password = hashedPassword;
-        user.role = 'user';
+        // user.role = 'user';
 
         const newUser = await User.create(user);
 

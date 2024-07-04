@@ -7,6 +7,7 @@ class User extends Model {
     public lastname!: string;
     public email!: string;
     public password!: string;
+    public role!: string; 
 
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
@@ -33,6 +34,11 @@ User.init({
     password: {
         type: new DataTypes.STRING(128),
         allowNull: false,
+    },
+    role: {
+        type: new DataTypes.STRING(50),
+        allowNull: false,
+        defaultValue: 'user',
     },
 }, {
     tableName: 'users',

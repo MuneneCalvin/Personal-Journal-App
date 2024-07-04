@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import logger from '../config/logger';
-import Users from '../models/users.model';
-
+import User from '../models/users.model';
 
 const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
     const header = req.headers.authorization;
@@ -18,14 +17,28 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
             return res.status(401).send({ message: 'Token expired.' });
         }
 
-        const user = await Users.findOne({ where: { id: decoded.id } });
+        const user = await User.findOne({ where: { id: decoded.id } });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
         req.body.user = user;
-        next();
+
+        if (user.role === 'admin') {
+            next();
+        } else if (user.role === 'user') {
+            if (req.baseUrl.includes('/journals')) {
+                next();
+            } else {
+                return res.status(403).json({ message: 'Unauthorized' });
+            }
+        } else {
+            return res.status(403).json({ message: 'Unauthorized' });
+        }
     } catch (error) {
         logger.error(`Unauthorized: ${error}`);
         return res.status(401).send({ message: 'Unauthorized' });
     }
 };
-
 
 export default verifyToken;

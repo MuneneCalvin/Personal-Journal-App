@@ -45,6 +45,17 @@ class JournalController {
         }
     }
 
+    public async getSummary(req: Request, res: Response) {
+        try {
+            const { startDate, endDate } = req.query;
+            const userId = req.app.locals.user.id;
+            const summary = await journalService.getSummary(userId, new Date(startDate as string), new Date(endDate as string));
+            res.status(200).json({ success: true, message: "Summary", summary });
+        } catch (error) {
+            res.status(400).json({ message: 'Failed to get summary', details: error });
+        }
+    }
+
     public async updateJournalById(req: Request, res: Response) {
         try {
             const { journalId } = req.params;

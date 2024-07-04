@@ -13,6 +13,21 @@ class JournalService {
         return await Journal.findOne({ where: { id: journalId, userId } });
     }
 
+    public async getJournalsByCategory(category: string, userId: number) {
+        return await Journal.findAll({ where: { category, userId } });
+    }
+
+    public async getSummary(userId: number, startDate: Date, endDate: Date) {
+        return await Journal.findAll({
+            where: {
+                userId,
+                createdAt: {
+                    $between: [startDate, endDate]
+                }
+            }
+        });
+    }
+
     public async updateJournalById(journalId: number, title: string, content: string, category: string, userId: number) {
         return await Journal.update({ title, content, category }, { where: { id: journalId, userId } });
     }
@@ -23,10 +38,6 @@ class JournalService {
 
     public async deleteAllJournals(userId: number) {
         return await Journal.destroy({ where: { userId } });
-    }
-
-    public async getJournalsByCategory(category: string, userId: number) {
-        return await Journal.findAll({ where: { category, userId } });
     }
 }
 

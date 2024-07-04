@@ -4,10 +4,15 @@ import verifyToken from '../middlewares/verifyToken';
 
 const router = Router();
 
-router.post('/', verifyToken, journalController.createJournal);
-router.get('/', verifyToken, journalController.getAllJournals);
+router
+    .route('/')
+    .get(verifyToken, journalController.getAllJournals)
+    .post(verifyToken, journalController.createJournal);
+
+router.get('/user', verifyToken, journalController.getAllJournalsByUser);
 router.get('/:journalId', verifyToken, journalController.getJournalById);
 router.get('/category/:category', verifyToken, journalController.getJournalsByCategory);
+router.get('/summary', verifyToken, journalController.getSummary);
 router.put('/:journalId', verifyToken, journalController.updateJournalById);
 router.delete('/:journalId', verifyToken, journalController.deleteJournalById);
 

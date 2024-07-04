@@ -41,3 +41,9 @@ app.listen(config.port, () => {
     logger.info(`Listening to Port ${config.port} 🚀🚀`);
 });
 
+
+// send back a 404 error for any unknown api request
+app.use((req, res, next) => {
+    logger.error('404 - Not found');
+    res.status(404).json({ message: 'Route not found', });
+});

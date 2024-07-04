@@ -5,7 +5,7 @@ class UserController {
     public async getAllUsers(req: Request, res: Response) {
         try {
             const users = await userService.getAllUsers();
-            res.status(200).json({ success: true, message: "Users fetched", users });
+            res.status(200).json({ success: true, message: "Users fetched", data: users });
         } catch (error) {
             res.status(400).json({ message: 'Failed to fetch users', details: error });
         }
@@ -15,7 +15,7 @@ class UserController {
         try {
             const { userId } = req.params;
             const user = await userService.getUserById(userId);
-            res.status(200).json({ success: true, message: "User fetched", user });
+            res.status(200).json({ success: true, message: "User fetched", data:user });
         } catch (error) {
             res.status(400).json({ message: 'Failed to fetch user', details: error });
         }
@@ -25,7 +25,7 @@ class UserController {
         try {
             const { userId } = req.params;
             const updatedUser = await userService.updateUserById(userId, req.body);
-            res.status(200).json({ success: true, message: "User Updated", updatedUser });
+            res.status(200).json({ success: true, message: "User Updated", data: updatedUser });
         } catch (error) {
             res.status(400).json({ message: 'Failed to update user', details: error });
         }
@@ -35,7 +35,7 @@ class UserController {
         try {
             const { userId } = req.params;
             const deletedUser = await userService.deleteUser(userId);
-            res.status(200).json({ success: true, message: "User Deleted", deletedUser });
+            res.status(200).json({ success: true, message: "User Deleted", data: deletedUser});
         } catch (error) {
             res.status(400).json({ message: 'Failed to delete user', details: error });
         }

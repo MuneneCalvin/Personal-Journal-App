@@ -7,12 +7,13 @@ dotenv.config();
 
 class AuthService {
     public async registerUser(user: any) {
+        const hashedPassword = bcrypt.hashSync(user.password, 10);
+        user.password = hashedPassword;
+        // user.role = 'user';
+
         const newUser = await User.create(user);
-        const hashedPassword = bcrypt.hashSync(newUser.password, 10);
-        newUser.password = hashedPassword;
 
         const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET as string, { expiresIn: 86400 });
-
         return { user: newUser, token };
     }
 
@@ -31,7 +32,7 @@ class AuthService {
             expiresIn: 86400, // 24 hours
         });
 
-        return { token };
+        return token;
     }
 
     public async logoutUser() {

@@ -31,7 +31,7 @@ class AuthService {
             expiresIn: 86400, // 24 hours
         });
 
-        return { token };
+        return token;
     }
 
     public async logoutUser() {

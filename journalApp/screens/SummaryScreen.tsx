@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
-import { getJournalEntries } from '../services/apiService';
+import { getSummary } from '../services/apiService';
 import { format, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from 'date-fns';
 
 const SummaryScreen = () => {
@@ -10,7 +10,7 @@ const SummaryScreen = () => {
   useEffect(() => {
     const fetchEntries = async () => {
       try {
-        const response = await getJournalEntries();
+        const response = await getSummary();
         const fetchedEntries = response.data;
         setEntries(fetchedEntries);
         calculateSummary(fetchedEntries);

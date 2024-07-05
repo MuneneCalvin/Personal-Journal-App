@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button } from 'react-native';
-import { addJournalEntry, updateJournalEntry } from '../services/apiService';
+import { createJournal, updateJournal } from '../services/apiService';
 
 const JournalEntryForm = ({ entry, onSave }) => {
     const [title, setTitle] = useState(entry ? entry.title : '');
@@ -12,9 +12,9 @@ const JournalEntryForm = ({ entry, onSave }) => {
         const newEntry = { title, content, category, date };
         try {
         if (entry) {
-            await updateJournalEntry(entry.id, newEntry);
+            await updateJournal(entry.id, newEntry);
         } else {
-            await addJournalEntry(newEntry);
+            await createJournal(newEntry);
         }
         onSave();
         } catch (error) {

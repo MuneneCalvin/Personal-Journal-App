@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Button, Text, FlatList } from 'react-native';
-import { getJournalEntries } from '../services/apiService';
+import { getJournalsByUser } from '../services/apiService';
 
 const HomeScreen = ({ navigation }) => {
   const [entries, setEntries] = useState([]);
@@ -8,7 +8,7 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     const fetchEntries = async () => {
       try {
-        const response = await getJournalEntries();
+        const response = await getJournalsByUser();
         setEntries(response.data);
       } catch (error) {
         alert(error.response?.data?.message || error.message);

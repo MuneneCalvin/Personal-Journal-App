@@ -1,8 +1,7 @@
-// src/services/apiService.ts
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const API_BASE_URL = 'https://your-api-url.com';
+const API_BASE_URL = 'https://localhost:4200';
 
 const api = axios.create({
     baseURL: API_BASE_URL,
@@ -16,12 +15,17 @@ api.interceptors.request.use(async (config) => {
     return config;
 });
 
-export const login = (email: string, password: string) => api.post('/auth/login', { email, password });
-export const signup = (email: string, password: string) => api.post('/auth/signup', { email, password });
+export const login = (email: string, password: string) => api.post('/users/login', { email, password });
+export const signup = (email: string, password: string) => api.post('/users/register', { email, password });
 
-export const addJournalEntry = (entry) => api.post('/journal', entry);
-export const updateJournalEntry = (id, entry) => api.put(`/journal/${id}`, entry);
-export const deleteJournalEntry = (id) => api.delete(`/journal/${id}`);
-export const getJournalEntries = () => api.get('/journal');
-export const updateUsername = (username: string) => api.put('/user/username', { username });
-export const updatePassword = (password: string) => api.put('/user/password', { password });
+export const getJournals = () => api.get('/journals');
+export const getJournal = (journalId: string) => api.get(`/journals/${journalId}`);
+export const getSummary = () => api.get('/journals/summary');
+export const getJournalsByCategory = (category: string) => api.get(`/journals/category/${category}`);
+export const getJournalsByUser = () => api.get('/journals/user');
+export const createJournal = (journal: any) => api.post('/journals', journal);
+export const updateJournal = (journalId: string, journal: any) => api.put(`/journals/${journalId}`, journal);
+export const deleteJournal = (journalId: string) => api.delete(`/journals/${journalId}`);
+
+export const updateUsername = (username: string) => api.put('/users/username', { username });
+export const updatePassword = (password: string) => api.put('/users/password', { password });

@@ -24,3 +24,27 @@ web-build/
 
 package-lock.json
 yarn.lock
+
+
+
+  console.log("User Data:", user)
+  if (user.length = []) {
+      const company = await Companies.aggregate([
+          { $match: { _id: ObjectId(company_id) } },
+          {
+            $lookup: {
+              from: "users",
+              localField: "_id",
+              foreignField: "company_id",
+              as: "users"
+            }
+          },
+          { $unwind: "$users" },
+          {
+            $project: {
+              company_name: 1,
+              contact_persons: 1,
+              "user_email": "$users.email",
+            }
+          }
+      ])

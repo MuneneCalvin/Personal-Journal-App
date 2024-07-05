@@ -3,15 +3,15 @@ import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import axios from 'axios';
 
 const LoginScreen = () => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleLogin = async () => {
         try {
-            const response = await axios.post('http://your-backend-url/signup', { username, password });
-            console.log('Sign Up successful:', response.data);
+            const response = await axios.post('http://your-backend-url/signup', { email, password });
+            console.log('Login successful:', response.data);
         } catch (error) {
-            console.error('Sign Up failed:', error);
+            console.error('Login failed:', error);
         }
     };
 
@@ -20,17 +20,18 @@ const LoginScreen = () => {
         <Text>Login</Text>
         <TextInput
             style={styles.input}
-            placeholder="Username"
-            value={username}
-            onChangeText={setUsername}
+            placeholder="user@gmail.com"
+            value={email}
+            onChangeText={setEmail}
         />
         <TextInput
             style={styles.input}
-            placeholder="Password"
+            placeholder="********"
             value={password}
             onChangeText={setPassword}
             secureTextEntry
         />
+
         <Button title="Login" onPress={handleLogin} />
         </View>
     );

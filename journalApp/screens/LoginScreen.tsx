@@ -1,56 +1,30 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import axios from 'axios';
+import { View, TextInput, Button, Text } from 'react-native';
+import { login } from '../services/apiService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleLogin = async () => {
         try {
-            const response = await axios.post('http://your-backend-url/signup', { email, password });
-            console.log('Login successful:', response.data);
+        const response = await login(email, password);
+        await AsyncStorage.setItem('token', response.data.token);
+        navigation.replace('App');
         } catch (error) {
-            console.error('Login failed:', error);
+        alert(error.response?.data?.message || error.message);
         }
     };
 
     return (
-        <View style={styles.container}>
-        <Text>Login</Text>
-        <TextInput
-            style={styles.input}
-            placeholder="user@gmail.com"
-            value={email}
-            onChangeText={setEmail}
-        />
-        <TextInput
-            style={styles.input}
-            placeholder="********"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-        />
-
+        <View>
+        <TextInput placeholder="Email" value={email} onChangeText={setEmail} />
+        <TextInput placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry />
         <Button title="Login" onPress={handleLogin} />
+        <Button title="Go to Signup" onPress={() => navigation.navigate('Signup')} />
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    input: {
-        width: '80%',
-        padding: 10,
-        marginBottom: 10,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 4,
-    },
-});
 
 export default LoginScreen;

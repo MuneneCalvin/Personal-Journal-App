@@ -1,65 +1,60 @@
-// screens/SummaryScreen.tsx
 import React, { useState, useEffect } from 'react';
-import { View, Text, Picker, StyleSheet } from 'react-native';
-import axios from 'axios';
+import { View, Text } from 'react-native';
+import { getJournalEntries } from '../services/apiService';
+import { format, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from 'date-fns';
 
 const SummaryScreen = () => {
-    const [period, setPeriod] = useState('Daily');
-    const [summary, setSummary] = useState([]);
+  const [entries, setEntries] = useState([]);
+  const [summary, setSummary] = useState({ daily: [], weekly: [], monthly: [] });
 
-    useEffect(() => {
-        const fetchSummary = async () => {
-        try {
-            const response = await axios.get(`http://your-backend-url/summary?period=${period.toLowerCase()}`);
-            setSummary(response.data);
-        } catch (error) {
-            console.error('Failed to fetch summary:', error);
-        }
-        };
+  useEffect(() => {
+    const fetchEntries = async () => {
+      try {
+        const response = await getJournalEntries();
+        const fetchedEntries = response.data;
+        setEntries(fetchedEntries);
+        calculateSummary(fetchedEntries);
+      } catch (error) {
+        alert(error.response?.data?.message || error.message);
+      }
+    };
 
-        fetchSummary();
-    }, [period]);
+    fetchEntries();
+  }, []);
 
-    return (
-        <View style={styles.container}>
-        <Text>Summary</Text>
-        <Picker
-            selectedValue={period}
-            onValueChange={(itemValue) => setPeriod(itemValue)}
-            style={styles.picker}
-        >
-            <Picker.Item label="Daily" value="Daily" />
-            <Picker.Item label="Weekly" value="Weekly" />
-            <Picker.Item label="Monthly" value="Monthly" />
-        </Picker>
-        <View>
-            {summary.map((item, index) => (
-            <View key={index} style={styles.entry}>
-                <Text>{item.date}: {item.count} entries</Text>
-            </View>
-            ))}
-        </View>
-        </View>
-    );
+  const calculateSummary = (entries) => {
+    const today = new Date();
+    const daily = entries.filter(entry => format(new Date(entry.date), 'yyyy-MM-dd') === format(today, 'yyyy-MM-dd'));
+
+    const weekStart = startOfWeek(today);
+    const weekEnd = endOfWeek(today);
+    const weekly = entries.filter(entry => {
+      const entryDate = new Date(entry.date);
+      return entryDate >= weekStart && entryDate <= weekEnd;
+    });
+
+    const monthStart = startOfMonth(today);
+    const monthEnd = endOfMonth(today);
+    const monthly = entries.filter(entry => {
+      const entryDate = new Date(entry.date);
+      return entryDate >= monthStart && entryDate <= monthEnd;
+    });
+
+    setSummary({ daily, weekly, monthly });
+  };
+
+  return (
+    <View>
+      <Text>Daily Summary</Text>
+      {summary.daily.map(entry => <Text key={entry.id}>{entry.title}</Text>)}
+
+      <Text>Weekly Summary</Text>
+      {summary.weekly.map(entry => <Text key={entry.id}>{entry.title}</Text>)}
+
+      <Text>Monthly Summary</Text>
+      {summary.monthly.map(entry => <Text key={entry.id}>{entry.title}</Text>)}
+    </View>
+  );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 20,
-    },
-    picker: {
-        height: 50,
-        width: '100%',
-        marginBottom: 20,
-    },
-    entry: {
-        marginBottom: 20,
-        padding: 15,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 5,
-    },
-});
 
 export default SummaryScreen;

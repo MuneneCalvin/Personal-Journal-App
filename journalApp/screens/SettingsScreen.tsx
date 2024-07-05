@@ -1,60 +1,38 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import axios from 'axios';
+import { View, TextInput, Button, Alert } from 'react-native';
+import { updateUsername, updatePassword } from '../services/apiService';
 
-const SettingsScreen = ({ navigation }) => {
+const SettingsScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleUpdate = async () => {
+  const handleUpdateUsername = async () => {
     try {
-      const response = await axios.put('http://your-backend-url/user', {
-        username,
-        password,
-      });
-      console.log('User updated:', response.data);
-      // Handle success, navigate to next screen, etc.
+      await updateUsername(username);
+      Alert.alert('Username updated successfully');
     } catch (error) {
-      console.error('Failed to update user:', error);
-      // Show error message to the user
+      Alert.alert(error.response?.data?.message || error.message);
+    }
+  };
+
+  const handleUpdatePassword = async () => {
+    try {
+      await updatePassword(password);
+      Alert.alert('Password updated successfully');
+    } catch (error) {
+      Alert.alert(error.response?.data?.message || error.message);
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text>Update Settings</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-      <Button title="Update" onPress={handleUpdate} />
+    <View>
+      <TextInput placeholder="New Username" value={username} onChangeText={setUsername} />
+      <Button title="Update Username" onPress={handleUpdateUsername} />
+
+      <TextInput placeholder="New Password" value={password} onChangeText={setPassword} secureTextEntry />
+      <Button title="Update Password" onPress={handleUpdatePassword} />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  input: {
-    width: '80%',
-    padding: 10,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 4,
-  },
-});
 
 export default SettingsScreen;

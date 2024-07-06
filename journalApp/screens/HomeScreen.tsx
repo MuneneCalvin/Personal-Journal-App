@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Button, Text, FlatList } from 'react-native';
+import { View, FlatList } from 'react-native';
+import { Button, Text } from 'react-native-paper';
 import { getJournalsByUser } from '../services/apiService';
 
 const HomeScreen = ({ navigation }) => {
@@ -27,17 +28,21 @@ const HomeScreen = ({ navigation }) => {
   };
 
   return (
-    <View>
-      <Button title="Add Journal Entry" onPress={handleAddEntry} />
+    <View style={{ flex: 1, padding: 20 }}>
+      <Button mode="contained" onPress={handleAddEntry} style={{ marginBottom: 10 }}>
+        Add Journal Entry
+      </Button>
       <FlatList
         data={entries}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View>
+          <View style={{ marginBottom: 10 }}>
             <Text>Title: {item.title}</Text>
             <Text>Category: {item.category}</Text>
             <Text>Date: {item.date}</Text>
-            <Button title="Edit" onPress={() => handleEditEntry(item)} />
+            <Button onPress={() => handleEditEntry(item)} style={{ marginTop: 5 }}>
+              Edit
+            </Button>
           </View>
         )}
       />

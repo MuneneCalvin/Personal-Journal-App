@@ -1,7 +1,6 @@
-// screens/EditEntryScreen.tsx
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import axios from 'axios';
+import { getJournal, updateJournal } from '../services/apiService';
 
 const EditEntryScreen = ({ route, navigation }) => {
   const { entryId } = route.params;
@@ -13,15 +12,13 @@ const EditEntryScreen = ({ route, navigation }) => {
   useEffect(() => {
     const fetchEntry = async () => {
       try {
-        const response = await axios.get(`http://your-backend-url/entries/${entryId}`);
-        const entry = response.data;
-        setTitle(entry.title);
-        setContent(entry.content);
-        setCategory(entry.category);
-        setDate(entry.date);
+        const response = await getJournal(entryId);
+        setTitle(response.data.title);
+        setContent(response.data.content);
+        setCategory(response.data.category);
+        setDate(response.data.date);
       } catch (error) {
         console.error('Failed to fetch entry:', error);
-        // Show error message to the user
       }
     };
 
@@ -30,24 +27,16 @@ const EditEntryScreen = ({ route, navigation }) => {
 
   const handleEditEntry = async () => {
     try {
-      const response = await axios.put(`http://your-backend-url/entries/${entryId}`, {
-        title,
-        content,
-        category,
-        date,
-      });
-      console.log('Entry updated:', response.data);
-      // Navigate to the list screen or show success message
-      navigation.navigate('JournalList');
+      await updateJournal(entryId, { title, content, category, date });
+      navigation.navigate('Home');
     } catch (error) {
       console.error('Failed to update entry:', error);
-      // Show error message to the user
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text>Edit Entry</Text>
+      <Text>Edit Journal Entry</Text>
       <TextInput
         style={styles.input}
         placeholder="Title"

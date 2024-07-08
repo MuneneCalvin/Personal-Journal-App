@@ -24,7 +24,7 @@ export const getSummary = () => api.get('/journals/summary');
 export const getJournalsByCategory = (category: string) => api.get(`/journals/category/${category}`);
 export const getJournalsByUser = () => api.get('/journals/user');
 export const createJournal = (journal: any) => api.post('/journals', journal);
-export const updateJournal = (journalId: string, journal: any) => api.put(`/journals/${journalId}`, journal);
+export const updateJournal = (journalId: string, journal: any ) => api.put(`/journals/${journalId}`, journal);
 export const deleteJournal = (journalId: string) => api.delete(`/journals/${journalId}`);
 
 export const updateUsername = (username: string) => api.put('/users/username', { username });

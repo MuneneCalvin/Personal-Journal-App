@@ -6,7 +6,7 @@ import SignupScreen from '../screens/SignUpScreen';
 import HomeScreen from '../screens/HomeScreen';
 import JournalEntryScreen from '../screens/AddEntryScreen';
 import EditJournalEntryScreen from '../screens/EditEntryScreen';
-import JournalDetailScreen from '../screens/JournalListScreen';
+import JournalDetailScreen from '../screens/SummaryScreen';
 
 const Stack = createStackNavigator();
 

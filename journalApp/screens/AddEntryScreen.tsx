@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import axios from 'axios';
+import { createJournal } from '../services/apiService';
 
 const AddEntryScreen = ({ navigation }) => {
     const [title, setTitle] = useState('');
@@ -10,9 +10,9 @@ const AddEntryScreen = ({ navigation }) => {
 
     const handleAddEntry = async () => {
         try {
-        const response = await axios.post('http://your-backend-url/entries', { title, content, category, date, });
-        console.log('Entry added:', response.data);
-        navigation.navigate('JournalList');
+            const response = await createJournal({ title, content, category, date });
+            console.log('Entry added:', response.data);
+            navigation.navigate('Home');
         } catch (error) {
         console.error('Failed to add entry:', error);
         }
@@ -20,7 +20,7 @@ const AddEntryScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-        <Text>Add New Entry</Text>
+        <Text>Add New Journal Entry</Text>
         <TextInput
             style={styles.input}
             placeholder="Title"

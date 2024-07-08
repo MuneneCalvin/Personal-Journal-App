@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput } from 'react-native';
 import { Button } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { login } from '../services/apiService';
 
 const LoginScreen = ({ navigation }) => {
@@ -9,8 +10,9 @@ const LoginScreen = ({ navigation }) => {
 
     const handleLogin = async () => {
         try {
-        await login(email, password);
-        navigation.navigate('Home');
+            const response = await login(email, password);
+            await AsyncStorage.setItem('token', response.data.token);
+            navigation.navigate('Home');
         } catch (error) {
         alert(error.response?.data?.message || error.message);
         }

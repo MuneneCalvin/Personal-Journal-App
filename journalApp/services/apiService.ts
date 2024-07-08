@@ -1,7 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const API_BASE_URL = 'https://localhost:4200';
+const API_BASE_URL = 'http://192.168.200.40:4200';
 
 const api = axios.create({
     baseURL: API_BASE_URL,
@@ -15,8 +15,8 @@ api.interceptors.request.use(async (config) => {
     return config;
 });
 
-export const login = (email: string, password: string) => api.post('/users/login', { email, password });
-export const signup = (email: string, password: string) => api.post('/users/register', { email, password });
+export const login = (email: string, password: string) => api.post('/auth/login', { email, password });
+export const signup = (firstname: string, lastname: string, email: string, password: string ) => api.post('/auth/register', { firstname, lastname, email, password });
 
 export const getJournals = () => api.get('/journals');
 export const getJournal = (journalId: string) => api.get(`/journals/${journalId}`);

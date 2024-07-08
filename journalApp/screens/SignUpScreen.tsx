@@ -13,7 +13,13 @@ const SignupScreen = ({ navigation }) => {
     const handleSignup = async () => {
         try {
             const response = await signup(firstname, lastname, email, password);
-            await AsyncStorage.setItem('token', response.data.token);
+            console.log('Signup Response:', response.data);
+            if (response.data.token) {
+                await AsyncStorage.setItem('token', response.data.token);
+                navigation.navigate('Home');
+            } else {
+                alert('Signup failed');
+            }
             navigation.navigate('Home');
         } catch (error) {
         alert(error.response?.data?.message || error.message);

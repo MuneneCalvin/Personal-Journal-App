@@ -11,8 +11,12 @@ const LoginScreen = ({ navigation }) => {
     const handleLogin = async () => {
         try {
             const response = await login(email, password);
-            await AsyncStorage.setItem('token', response.data.token);
-            navigation.navigate('Home');
+            if (response.data.token) {
+                await AsyncStorage.setItem('token', response.data.token);
+                navigation.navigate('Home');
+            } else {
+                alert('Login failed');
+            }
         } catch (error) {
         alert(error.response?.data?.message || error.message);
         }

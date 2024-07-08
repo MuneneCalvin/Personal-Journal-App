@@ -16,7 +16,6 @@ const EditEntryScreen = ({ route, navigation }) => {
         setTitle(response.data.title);
         setContent(response.data.content);
         setCategory(response.data.category);
-        setDate(response.data.date);
       } catch (error) {
         console.error('Failed to fetch entry:', error);
       }
@@ -27,7 +26,7 @@ const EditEntryScreen = ({ route, navigation }) => {
 
   const handleEditEntry = async () => {
     try {
-      await updateJournal(entryId, { title, content, category, date });
+      await updateJournal(entryId, { title, content, category });
       navigation.navigate('Home');
     } catch (error) {
       console.error('Failed to update entry:', error);
@@ -55,12 +54,7 @@ const EditEntryScreen = ({ route, navigation }) => {
         value={category}
         onChangeText={setCategory}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Date (YYYY-MM-DD)"
-        value={date}
-        onChangeText={setDate}
-      />
+
       <Button title="Update Entry" onPress={handleEditEntry} />
     </View>
   );

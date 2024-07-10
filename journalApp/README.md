@@ -37,7 +37,14 @@ npm install
 npm install -g expo-cli / npm install expo
 ```
 
-### 4. Start the App
+### 4. Set Up API URL
+In the `src/services/apiService.ts` file, update the `API_BASE_URL` constant with the URL of the API server.
+
+```ts
+const API_BASE_URL = 'http://localhost:3000';
+```
+
+### 5. Start the App
 
 ```sh
 npx expo start

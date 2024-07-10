@@ -15,6 +15,7 @@ This is the backend for the MyJournalApp project. It is built with Node.ts, node
 
 - Node.js (v14 or higher)
 - MySQL
+- Docker (optional)
 - Postman
 
 ## Getting Started
@@ -45,6 +46,12 @@ npm install
     DB_NAME=database_name
   ```
 
+### 3.1.0 Set Up MySQL Database Using Docker
+- In my case I used Docker to create and host the database.
+- Make sure you have Docker installed on your machine and its running.
+- In the `.src/utils/database.ts` file, update the `sequelize` constant with the URL of the MySQL database.
+- Then Jump to step 5.1
+
 ### 4. Run Migrations
     
     ```sh
@@ -56,6 +63,15 @@ npm install
     ```sh
     npm start
     ```
+
+### 5.1. Start the Server Using Docker
+- In my case I used Docker to create a MySQL container. Here are the steps to run the project with Docker:
+- Make sure you have Docker installed on your machine and its running.
+- Run the following command to start the App with Docker:
+
+  ```sh
+   docker-compose up --build  
+  ```
 
 ## Built With
 
